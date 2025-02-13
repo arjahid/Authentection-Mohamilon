@@ -4,7 +4,7 @@ import { AuthContext } from './providers/AuthProvider';
 
 const Login = () => {
   const navigate=useNavigate()
-  const {signInUser}=useContext(AuthContext)
+  const {signInUser,signInWithGoogle}=useContext(AuthContext)
     const handleLogiin=(e)=>{
         e.preventDefault();
         const email=e.target.email.value;
@@ -13,11 +13,23 @@ const Login = () => {
         signInUser(email,password)
         .then(result => {
             console.log(result.user);
+            e.target.reset();
             navigate('/orders')
         })
         .catch(error => {
             console.log(error);
         });
+    }
+    const handleGoogle=()=>{
+      signInWithGoogle()
+      .then(result => {
+          console.log(result.user);
+          navigate('/')
+      })
+      .catch(error => {
+          console.log(error.message);
+      });
+
     }
     return (
         <div className="hero bg-base-200 min-h-screen">
@@ -48,6 +60,9 @@ const Login = () => {
         </div>
       </form>
       <p className='ml-4 mb-4'>Are you New?Please <Link to='/register'>Register</Link></p>
+      <p>
+        <button onClick={handleGoogle} className='btn btn-ghost'>Google</button>
+      </p>
     </div>
   </div>
 </div>
